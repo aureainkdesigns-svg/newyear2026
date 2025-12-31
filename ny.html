@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurea Ink | The 2026 Chapter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@100;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a2a47; /* Your Brand Blue */
+            --paper: #fcfaf7; 
+            --gold: #c5a059;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--ink); /* Starting in the dark */
+            color: var(--paper);
+            font-family: 'Playfair Display', serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- BACKGROUND PARTICLES --- */
+        #canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* --- SECTION 1: THE HORIZON --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .year-bg {
+            position: absolute;
+            font-size: 25vw;
+            font-weight: 700;
+            color: var(--white);
+            opacity: 0.03;
+            z-index: -1;
+            user-select: none;
+        }
+
+        .hero h2 {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+
+        .hero h1 {
+            font-family: 'Pinyon Script', cursive;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 100;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            font-family: 'Montserrat';
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            animation: breathe 2s infinite;
+        }
+
+        /* --- SECTION 2: THE QUOTE (TRANSITION) --- */
+        .quote-section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--paper);
+            color: var(--ink);
+            padding: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .quote-card {
+            max-width: 800px;
+            text-align: center;
+            border: 1px solid rgba(26, 42, 71, 0.1);
+            padding: 80px 40px;
+            position: relative;
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 5rem;
+            color: var(--gold);
+            background: var(--paper);
+            padding: 0 20px;
+        }
+
+        /* --- SECTION 3: THE FINAL LETTER --- */
+        .letter-section {
+            min-height: 100vh;
+            background: var(--paper);
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px;
+        }
+
+        .letter-wrap {
+            max-width: 800px;
+            width: 100%;
+            background: var(--white);
+            padding: clamp(40px, 8vw, 100px);
+            box-shadow: 40px 40px 80px rgba(0,0,0,0.03);
+            border-left: 1px solid var(--gold);
+        }
+
+        .logo-box {
+            width: 120px;
+            margin-bottom: 60px;
+            filter: grayscale(1) contrast(1.2);
+        }
+
+        .letter-body {
+            font-size: 1.3rem;
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .letter-body strong {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .signature-area {
+            margin-top: 60px;
+            border-top: 1px solid #eee;
+            padding-top: 40px;
+        }
+
+        /* --- FOOTER CREDITS --- */
+        footer {
+            background: var(--ink);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .footer-tag {
+            font-family: 'Montserrat';
+            color: var(--gold);
+            letter-spacing: 5px;
+            font-size: 0.7rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-main {
+            font-size: 1.5rem;
+            color: var(--paper);
+            margin-bottom: 20px;
+        }
+
+        .price-badge {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            padding: 8px 20px;
+            font-family: 'Montserrat';
+            font-size: 0.8rem;
+            color: var(--gold);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-10px); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1.5s all ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <section class="hero">
+        <div class="year-bg">2026</div>
+        <h2>A New Chapter for</h2>
+        <h1>[Receiver Name]</h1>
+        <div class="scroll-indicator">SCROLL TO UNRAVEL</div>
+    </section>
+
+    <section class="quote-section">
+        <div class="quote-card reveal">
+            <p style="font-size: 1.8rem; line-height: 1.6; font-style: italic;">
+                "Ink is the shadow of our thoughts, and 2026 is the light that will turn those shadows into reality."
+            </p>
+            <p style="margin-top: 30px; font-family: 'Montserrat'; font-size: 0.7rem; letter-spacing: 4px;">AUREA INK PHILOSOPHY</p>
+        </div>
+    </section>
+
+    <section class="letter-section">
+        <div class="letter-wrap reveal">
+            <img src="logo.png" alt="Aurea Ink" class="logo-box">
+            
+            <div class="letter-body">
+                <p>To my dear friend, [Receiver Name],</p>
+                <br>
+                <p>As the clock resets, we are given a gift that no amount of gold can buy: <strong>365 fresh mornings.</strong></p>
+                <br>
+                <p>In 2026, I hope you stop waiting for the "perfect moment" to start your masterpiece. I hope you realize that the messy sketches, the ink stains on your fingers, and the drafts you almost threw away are exactly what make your story beautiful.</p>
+                <br>
+                <p>May your year be filled with <strong>deliberate joy</strong> and <strong>graceful ambition</strong>. Thank you for being a part of the Aurea circle.</p>
+            </div>
+
+            <div class="signature-area">
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Deeply and Always,</p>
+                <p style="font-family: 'Pinyon Script'; font-size: 3rem; color: var(--ink);">Aurea Ink</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p class="footer-tag">BEYOND THE PAGE</p>
+        <h3 class="footer-main">Handcrafted Digital Artistry</h3>
+        <div class="price-badge">BESPOKE WEBSITES @ 99</div>
+        <p style="margin-top: 30px; opacity: 0.4; font-size: 0.7rem;">&copy; 2026 AUREA INK DESIGNS</p>
+    </footer>
+
+    <script>
+        // Particle Background Logic
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedY = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = '#c5a059';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Scroll Reveal Logic
+        window.addEventListener('scroll', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 150) {
+                    el.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
